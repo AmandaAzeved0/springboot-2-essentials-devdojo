@@ -30,8 +30,11 @@ public class AnimeService {
     }
 
     public List<Anime> findByName(String name) {
-
-        return animeRepository.findByName(name);
+        List<Anime> byName = animeRepository.findByName(name);
+        if (byName.isEmpty()){
+            throw new BadRequestException("Anime not Found");
+        }
+        return byName;
     }
 
     public Anime findByIdOrThrowBadRequestException(long id) {
@@ -58,5 +61,9 @@ public class AnimeService {
         anime.setId(savedAnime.getId());
 
         animeRepository.save(anime);
+    }
+
+    public List<Anime> listAllNonPageable() {
+        return animeRepository.findAll();
     }
 }
